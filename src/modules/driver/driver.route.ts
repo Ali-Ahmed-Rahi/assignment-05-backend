@@ -1,16 +1,19 @@
-import { Router } from "express";
+import express from "express";
 import * as driverController from "./driver.controller";
 import { authMiddleware, authorize } from "../../middlewares/auth";
 
-const router = Router();
+const router = express.Router();
 
-// Admin only
+// Admin approves a driver
+router.patch("/:id/approve", authMiddleware, authorize("admin"), driverController.approveDriver);
+
+// Admin suspends a driver
+router.patch("/:id/suspend", authMiddleware, authorize("admin"), driverController.suspendDriver);
+
+// Get all drivers (admin)
 router.get("/", authMiddleware, authorize("admin"), driverController.getAllDrivers);
-router.get("/:id", authMiddleware, authorize("admin"), driverController.getDriverById);
-router.patch("/approve/:id", authMiddleware, authorize("admin"), driverController.approveDriver);
-router.patch("/suspend/:id", authMiddleware, authorize("admin"), driverController.suspendDriver);
 
-// Driver only
-router.patch("/availability/:id", authMiddleware, authorize("driver"), driverController.setAvailability);
+// Get a driver by ID (admin)
+router.get("/:id", authMiddleware, authorize("admin"), driverController.getDriverById);
 
 export default router;

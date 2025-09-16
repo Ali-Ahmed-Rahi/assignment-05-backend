@@ -9,7 +9,7 @@ import { Driver } from "../driver/driver.model";
 
 export const register = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    // ✅ Validate incoming data
+    //  Validate incoming data
     const parsedData = registerSchema.parse(req.body); 
 
     const { name, email, password, role } = parsedData;

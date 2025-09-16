@@ -8,11 +8,11 @@ router.use(authMiddleware, authorize("admin"));
 
 // Users
 router.get("/users", adminController.getUsers);
-router.patch("/users/block/:id", adminController.blockUnblockUser);
+router.patch("/users/:id/block", adminController.blockUnblockUser);
 
 // Drivers
 router.get("/drivers", adminController.getDrivers);
-router.patch("/drivers/approve/:id", adminController.approveSuspendDriver);
+router.patch("/drivers/:id/approve", adminController.approveSuspendDriver);
 
 // Rides
 router.get("/rides", adminController.getRides);

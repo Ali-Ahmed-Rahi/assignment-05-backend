@@ -1,33 +1,33 @@
-import { Driver } from "./driver.model";
+import { Driver, IDriver } from "./driver.model";
 import ApiError from "../../utils/ApiError";
 import mongoose from "mongoose";
 
-export const getAllDrivers = async () => {
+export const getAllDrivers = async (): Promise<IDriver[]> => {
   return await Driver.find().populate("user", "name email role blocked");
 };
 
-export const getDriverById = async (id: string) => {
+export const getDriverById = async (id: string): Promise<IDriver> => {
   if (!mongoose.Types.ObjectId.isValid(id)) throw new ApiError(400, "Invalid driver ID");
   const driver = await Driver.findById(id).populate("user", "name email role blocked");
   if (!driver) throw new ApiError(404, "Driver not found");
   return driver;
 };
 
-export const approveDriver = async (id: string) => {
+export const approveDriver = async (id: string): Promise<IDriver> => {
   const driver = await getDriverById(id);
   driver.approved = true;
   await driver.save();
   return driver;
 };
 
-export const suspendDriver = async (id: string) => {
+export const suspendDriver = async (id: string): Promise<IDriver> => {
   const driver = await getDriverById(id);
   driver.approved = false;
   await driver.save();
   return driver;
 };
 
-export const setAvailability = async (id: string, online: boolean) => {
+export const setAvailability = async (id: string, online: boolean): Promise<IDriver> => {
   const driver = await getDriverById(id);
   driver.online = online;
   await driver.save();
