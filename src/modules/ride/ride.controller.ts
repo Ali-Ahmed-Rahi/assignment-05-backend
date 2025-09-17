@@ -41,6 +41,23 @@ export const acceptRide = async (req: Request, res: Response, next: NextFunction
   }
 };
 
+
+// Driver rejects a ride
+export const rejectRide = async (req: any, res: Response, next: NextFunction) => {
+  try {
+    const { id } = req.params;
+    const ride = await rideService.rejectRide(id, req.user.id);
+
+    res.status(200).json({
+      success: true,
+      message: "Ride rejected successfully",
+      ride,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 // Driver updates ride status
 export const updateRideStatus = async (req: Request, res: Response, next: NextFunction) => {
   try {

@@ -40,6 +40,30 @@ export const acceptRide = async (rideId: string, driverId: string) => {
   return ride;
 };
 
+
+// Driver rejects a ride
+export const rejectRide = async (rideId: string, driverId: string) => {
+  const ride = await Ride.findById(rideId);
+  if (!ride) {
+    throw new ApiError(404, "Ride not found");
+  }
+
+  // Ensure only the assigned driver can reject
+  if (ride.driver.toString() !== driverId) {
+    throw new ApiError(403, "You are not authorized to reject this ride");
+  }
+
+  // Ride must be in requested or accepted stage
+  if (!["requested", "accepted"].includes(ride.status)) {
+    throw new ApiError(400, "Ride cannot be rejected at this stage");
+  }
+
+  ride.status = "rejected";
+  await ride.save();
+
+  return ride;
+};
+
 // Update ride status (Driver only)
 export const updateRideStatus = async (rideId: string, status: string) => {
   const ride = await Ride.findById(rideId);

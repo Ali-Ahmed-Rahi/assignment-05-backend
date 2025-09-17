@@ -20,7 +20,7 @@ const rideSchema: Schema<IRide> = new Schema(
     fare: { type: Number, default: 0 },
     status: {
       type: String,
-      enum: ["requested", "accepted", "in-progress", "completed", "cancelled"],
+      enum: ["requested", "accepted", "in-progress", "completed", "cancelled","rejected"],
       default: "requested",
     },
   },
