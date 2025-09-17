@@ -25,8 +25,10 @@ const userSchema: Schema<IUser> = new Schema(
 
 userSchema.pre<IUser>("save", async function (next) {
   if (!this.isModified("password")) return next();
-  const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt);
+  // const salt = await bcrypt.genSalt(10);
+  this.password = await bcrypt.hash(this.password, 10);
+  
+  console.log("password from authModel",this.password);
   next();
 });
 

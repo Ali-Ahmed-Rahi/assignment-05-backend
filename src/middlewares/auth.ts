@@ -10,6 +10,7 @@ export const authMiddleware = (req: any, res: Response, next: NextFunction) => {
   const token = authHeader.split(" ")[1];
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET || "secret");
+    if (!decoded) return next(new ApiError(401, "Invalid token"));
     req.user = decoded;
     next();
   } catch {

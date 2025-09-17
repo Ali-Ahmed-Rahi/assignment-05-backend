@@ -16,7 +16,7 @@ router.patch("/users/:id/block", adminController.blockUnblockUser);
 // admin can see all drivers
 router.get("/drivers", adminController.getDrivers);
 
-// admin can update drivers
+// admin can update drivers 
 router.patch("/drivers/:id/approve", adminController.approveSuspendDriver);
 
 // admin can see all rides

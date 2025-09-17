@@ -1,4 +1,4 @@
-import { User } from "./auth.model";
+import { User } from "../user/user.model";
 import ApiError from "../../utils/ApiError";
 import jwt from "jsonwebtoken";
 import { IUser } from "./auth.model";
@@ -13,12 +13,13 @@ export const registerUser = async (data: Partial<IUser>) => {
 };
 
 export const loginUser = async (email: string, password: string) => {
-  const user = await User.findOne({ email });
-  if (!user) throw new ApiError(401, "Invalid credentials");
-  if (user.blocked) throw new ApiError(403, "User is blocked");
+  const user = await User.findOne({ email});
 
-  const isMatch = await user.comparePassword(password);
-  if (!isMatch) throw new ApiError(401, "Invalid credentials");
+  if (!user) throw new ApiError(401, "Invalid credentials");
+  if (user.blocked) throw new ApiError(403, "User is Not Found");
+
+  const isMatch = await User.comparePassword(password,user.password);
+  if (!isMatch) throw new ApiError(401, "Password didn't Match");
 
   const token = jwt.sign(
     { id: user._id, role: user.role },
@@ -28,3 +29,5 @@ export const loginUser = async (email: string, password: string) => {
 
   return { user, token };
 };
+
+

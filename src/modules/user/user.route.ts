@@ -12,6 +12,9 @@ router.get("/", authMiddleware, authorize("admin"), userController.getAllUsers);
 router.get("/:id", authMiddleware, authorize("admin"), userController.getUserById);
 
 
+
+// only admin can do this 
+
 // update user only ( admin )
 router.patch("/:id", authMiddleware, authorize("admin"), userController.updateUser);
 

@@ -34,7 +34,7 @@ export const blockUser = async (req: Request, res: Response, next: NextFunction)
   try {
     const { id } = req.params;
     const user = await userService.blockUser(id);
-    res.status(200).json({ success: true, user });
+    res.status(200).json({ success: true, user, massage:"User blocked successfully"});
   } catch (error) {
     next(error);
   }
@@ -44,7 +44,7 @@ export const unblockUser = async (req: Request, res: Response, next: NextFunctio
   try {
     const { id } = req.params;
     const user = await userService.unblockUser(id);
-    res.status(200).json({ success: true, user });
+    res.status(200).json({ success: true, user, massage:"User blocked successfully" });
   } catch (error) {
     next(error);
   }

@@ -10,19 +10,22 @@ import { Driver } from "../driver/driver.model";
 export const register = async (req: Request, res: Response, next: NextFunction) => {
   try {
     //  Validate incoming data
-    const parsedData = registerSchema.parse(req.body); 
+    const parsedData = registerSchema.parse(req.body);
 
     const { name, email, password, role } = parsedData;
+    console.log(parsedData);
 
     // Check if user exists
     const existingUser = await User.findOne({ email });
-    if (existingUser) throw new ApiError(400, "User already exists");
+    if (existingUser) throw new ApiError(400, "User already exists"); 
 
-    // Hash password
-    const hashedPassword = await bcrypt.hash(password, 10);
+    // // Hash password
+    // const hashedPassword = await bcrypt.hash(password, 10);
+    // console.log(hashedPassword);
 
     // Create user
-    const user = await User.create({ name, email, password: hashedPassword, role });
+    const user = await User.create(parsedData);
+    // console.log(user);
 
     // Auto-create driver document if role === 'driver'
     if (role === "driver") {
@@ -47,7 +50,9 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
     }
 
     const { email, password } = req.body;
+
     const result = await authService.loginUser(email, password);
+
     res.status(200).json({ success: true, ...result });
   } catch (error) {
     if (error instanceof ZodError) {
