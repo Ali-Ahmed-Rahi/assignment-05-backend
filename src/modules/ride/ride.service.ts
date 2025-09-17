@@ -2,6 +2,7 @@ import { Ride } from "./ride.model";
 
 import ApiError from "../../utils/ApiError";
 import mongoose from "mongoose";
+import { Driver } from "../driver/driver.model";
 
 // Rider requests a ride
 export const requestRide = async (riderId: string, pickupLocation: string, dropoffLocation: string) => {
@@ -106,4 +107,32 @@ export const getAllRides = async () => {
     .populate("driver", "name email vehicleNo");
 
   return rides;
+};
+
+
+export const completeRide = async (rideId: string) => {
+  const ride = await Ride.findById(rideId);
+  if (!ride) throw new ApiError(404, "Ride not found");
+
+  if (ride.status === "completed") {
+    throw new ApiError(400, "Ride already completed");
+  }
+
+  // Example fare calculation
+  const baseFare = 50;
+  const perKmRate = 10;
+  const distance = ride.distance || 0;
+
+  ride.fare = baseFare + distance * perKmRate;
+  ride.status = "completed";
+  await ride.save();
+
+  // Update driver earnings
+  const driver = await Driver.findById(ride.driver);
+  if (driver) {
+    driver.earnings += ride.fare;
+    await driver.save();
+  }
+
+  return ride;
 };

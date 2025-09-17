@@ -15,5 +15,6 @@ router.patch("/:id/accept", authMiddleware, authorize("driver"), rideController.
 router.patch("/:id/reject",authMiddleware,authorize("driver"),rideController.rejectRide);//reject ride requests
 router.patch("/:id/status", authMiddleware, authorize("driver"), rideController.updateRideStatus);//Update ride status 
 router.get("/me/driver", authMiddleware, authorize("driver"), rideController.getDriverRides);//Set availability status 
+router.patch("/:id/complete", authMiddleware, authorize("driver"), rideController.completeRideController);//View earnings history
 
 export default router;

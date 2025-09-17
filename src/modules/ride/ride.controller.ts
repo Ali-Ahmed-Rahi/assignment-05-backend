@@ -103,3 +103,14 @@ export const getAllRides = async(req: Request, res: Response) => {
     data: rides,
   });
 };
+
+
+export const completeRideController = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { id } = req.params;
+    const ride = await rideService.completeRide(id);
+    res.status(200).json({ success: true, ride });
+  } catch (error) {
+    next(error);
+  }
+};
