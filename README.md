@@ -1,21 +1,12 @@
-# Ride Booking API
+# 🚖 Ride Booking System API
 
-## Project Overview
-This is a **Ride Booking API** for managing riders, drivers, and rides in a ride-hailing system. It allows:
-
-- Rider registration, login, and ride requests  
-- Driver registration, login, and managing ride status  
-- Admin management for users, drivers, and rides  
-- Role-based access control for secure operations  
-- Viewing earnings, approving drivers, blocking/unblocking users  
-
-This API is built using **Node.js**, **Express.js**, **MongoDB**, and **TypeScript**, with JWT-based authentication.
+A backend application built with **Node.js, Express, TypeScript, and MongoDB** that simulates a ride booking platform like Uber/Pathao.  
+It supports **role-based access control (Admin, Driver, Rider)**, ride lifecycle management, fare calculation, driver earnings, and admin controls.
 
 ---
 
-## Setup & Environment Instructions
+## 📌 Features
 
-1. **Clone the repository**
-```bash
-git clone <repository_url>
-cd ride-booking-api
+- **Authentication & Authorization**
+  - JWT-based authentication
+  - Role-based access: `admin`, `driver`, `
