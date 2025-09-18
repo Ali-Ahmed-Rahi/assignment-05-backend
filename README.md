@@ -4,9 +4,9 @@
 A backend application built with **Node.js, Express, TypeScript, and MongoDB** that simulates a ride booking platform like Uber/Pathao.  
 It supports **role-based access control (Admin, Driver, Rider)**, ride lifecycle management, fare calculation, driver earnings, and admin controls
 
-##📌 Features (Detailed)
+## 📌 Features (Detailed)
 
-##👤 User Features (Rider & Driver)
+## 👤 User Features (Rider & Driver)
 
 Registration & Login: Secure sign-up and authentication using JWT.
 
@@ -16,7 +16,7 @@ Profile Management: Each user can view their own account details.
 
 Account Restrictions: Blocked users cannot log in or perform actions until unblocked by an admin.
 
-##🚗 Rider Features
+## 🚗 Rider Features
 
 Ride Request: Riders can request a new ride by providing pickup and dropoff locations.
 
@@ -28,7 +28,7 @@ Ride Status Updates: Riders are notified as their ride moves through statuses: r
 
 Cancellation: Riders can cancel a ride before it is picked up by a driver.
 
-##🚙 Driver Features
+## 🚙 Driver Features
 
 Ride Management: Drivers can view rides assigned to them.
 
@@ -44,7 +44,7 @@ Ride History: Drivers have access to all previously completed rides with detaile
 
 Suspension Handling: If suspended by an admin, drivers cannot take new rides until reinstated.
 
-##🛡️ Admin Features
+## 🛡️ Admin Features
 
 User Management:
 
@@ -68,7 +68,7 @@ Ensure compliance and fairness between riders and drivers.
 
 System Control: Acts as the super role, having access to all protected resources.
 
-##🔐 Security Features
+## 🔐 Security Features
 
 Password Hashing: All user passwords are encrypted using bcrypt before saving.
 
