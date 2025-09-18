@@ -8,7 +8,7 @@ It supports **role-based access control (Admin, Driver, Rider)**, ride lifecycle
 
 ## 👤 User Features (Rider & Driver)
 
-**Registration & Login:** Secure sign-up and authentication using JWT.
+***Registration & Login:*** Secure sign-up and authentication using JWT.
 
 **Role-based Access:** Users can register as rider, driver, or admin.
 
