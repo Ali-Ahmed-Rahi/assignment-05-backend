@@ -7,9 +7,9 @@ export const requestRide = async (req: Request, res: Response, next: NextFunctio
   try {
     if (!req.user) throw new ApiError(401, "Unauthorized: user not found")
     const riderId = req.user.id; 
-    const { pickupLocation, dropoffLocation } = req.body;
+    const { pickupLocation, destinationLocation } = req.body;
 
-    const ride = await rideService.requestRide(riderId, pickupLocation, dropoffLocation);
+    const ride = await rideService.requestRide(riderId, pickupLocation, destinationLocation);
 
     res.status(201).json({ success: true, ride });
   } catch (error) {

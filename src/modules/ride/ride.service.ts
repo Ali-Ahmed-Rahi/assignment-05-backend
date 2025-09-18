@@ -5,13 +5,13 @@ import mongoose from "mongoose";
 import { Driver } from "../driver/driver.model";
 
 // Rider requests a ride
-export const requestRide = async (riderId: string, pickupLocation: string, dropoffLocation: string) => {
+export const requestRide = async (riderId: string, pickupLocation: string, destinationLocation: string) => {
   if (!mongoose.Types.ObjectId.isValid(riderId)) throw new ApiError(400, "Invalid rider ID");
 
   const ride = await Ride.create({
     rider: riderId,
     pickupLocation,
-    dropoffLocation,
+    destinationLocation,
     status: "requested",
   });
 
