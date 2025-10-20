@@ -5,16 +5,18 @@ import { authMiddleware, authorize } from "../../middlewares/auth";
 const router = Router();
 
 // Rider routes
-router.get("/",authMiddleware, authorize("admin"),rideController.getAllRides)//
-router.post("/request", authMiddleware, rideController.requestRide);//Request a ride with pickup & destination location
-router.patch("/:id/cancel", authMiddleware, authorize("rider"), rideController.cancelRide);//Cancel a ride (within allowed window)
-router.get("/me", authMiddleware, authorize("rider"), rideController.getRiderRides);// view ride history
+router.post("/request", authMiddleware, rideController.requestRide);
+router.patch("/:id/cancel", authMiddleware, authorize("rider"), rideController.cancelRide);
+router.get("/me", authMiddleware, authorize("rider"), rideController.getRiderRides);
+router.get("/me/driver", authMiddleware, authorize("driver"), rideController.getDriverRides);
+
 
 // Driver routes
-router.patch("/:id/accept", authMiddleware, authorize("driver"), rideController.acceptRide);//Accept ride requests
-router.patch("/:id/reject",authMiddleware,authorize("driver"),rideController.rejectRide);//reject ride requests
-router.patch("/:id/status", authMiddleware, authorize("driver"), rideController.updateRideStatus);//Update ride status 
-router.get("/me/driver", authMiddleware, authorize("driver"), rideController.getDriverRides);//Set availability status 
-router.patch("/:id/complete", authMiddleware, authorize("driver"), rideController.completeRideController);//View earnings history
+router.patch("/:id/accept", authMiddleware, authorize("driver"), rideController.acceptRide);
+router.patch("/:id/reject",authMiddleware,authorize("driver"),rideController.rejectRide);
+router.patch("/:id/status", authMiddleware, authorize("driver","admin"), rideController.updateRideStatus);
+router.patch("/:id/complete", authMiddleware, authorize("driver"), rideController.completeRide);
+router.get("/earnings/me", authMiddleware, authorize("driver"), rideController.getDriverEarnings);
+
 
 export default router;

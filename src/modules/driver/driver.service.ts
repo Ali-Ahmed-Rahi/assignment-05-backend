@@ -27,9 +27,21 @@ export const suspendDriver = async (id: string): Promise<IDriver> => {
   return driver;
 };
 
-export const setAvailability = async (id: string, online: boolean): Promise<IDriver> => {
-  const driver = await getDriverById(id);
+
+export const setAvailability = async (userId: string, online: boolean) => {
+  const driver = await Driver.findOne({ user: userId });
+
+  if (!driver) throw new ApiError(404, "Driver not found");
+
+  if (!driver.approved) throw new ApiError(403, "Driver not approved");
+
   driver.online = online;
   await driver.save();
   return driver;
 };
+
+export const getEarnings = async (userId: string) => {
+  const driver = await Driver.findOne({ user: userId });
+  if (!driver) throw new ApiError(404, "Driver not found");
+  return { earnings: driver.earnings, driver };
+}

@@ -4,16 +4,17 @@ import { authMiddleware, authorize } from "../../middlewares/auth";
 
 const router = express.Router();
 
-// Admin approves a driver
+
 router.patch("/:id/approve", authMiddleware, authorize("admin"), driverController.approveDriver);
 
-// Admin suspends a driver
 router.patch("/:id/suspend", authMiddleware, authorize("admin"), driverController.suspendDriver);
 
-// Get all drivers (admin)
 router.get("/", authMiddleware, authorize("admin"), driverController.getAllDrivers);
 
-// Get a driver by ID (admin)
 router.get("/:id", authMiddleware, authorize("admin"), driverController.getDriverById);
+
+router.patch("/availability", authMiddleware, authorize("driver"), driverController.setAvailability);
+
+router.get("/earnings", authMiddleware, authorize("driver"), driverController.getEarnings);
 
 export default router;

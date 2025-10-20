@@ -4,23 +4,13 @@ import { Ride } from "../ride/ride.model";
 import ApiError from "../../utils/ApiError";
 import mongoose from "mongoose";
 
-// Get all users
 export const getAllUsers = async () => {
-  return await User.find().select("-password");
+  return await User.find({role: "rider"}).select("-password")
 };
 
-// Block or unblock user
-export const blockUser = async (userId: string, block: boolean) => {
-  if (!mongoose.Types.ObjectId.isValid(userId)) throw new ApiError(400, "Invalid user ID");
-  const user = await User.findById(userId);
-  if (!user) throw new ApiError(404, "User not found");
-  user.blocked = block;
-  await user.save();
-  return user;
-};
 
-// Get all drivers
-export const getAllDrivers = async () => {
+
+export const getAllDrivers = async (): Promise<any[]> => {
   return await Driver.find().populate("user", "name email role blocked approved online vehicleInfo");
 };
 

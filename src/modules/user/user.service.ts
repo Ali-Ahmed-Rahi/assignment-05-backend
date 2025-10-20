@@ -2,9 +2,7 @@ import { User } from "./user.model";
 import ApiError from "../../utils/ApiError";
 import mongoose from "mongoose";
 
-export const getAllUsers = async () => {
-  return await User.find();
-};
+
 
 export const getUserById = async (id: string) => {
   if (!mongoose.Types.ObjectId.isValid(id)) throw new ApiError(400, "Invalid user ID");

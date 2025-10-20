@@ -7,6 +7,7 @@ import driverRoutes from "./modules/driver/driver.route";
 import rideRoutes from "./modules/ride/ride.route";
 import adminRoutes from "./modules/admin/admin.route";
 import { errorHandler } from "./middlewares/errorHandler";
+import cookieParser from "cookie-parser"
 
 dotenv.config();
 const app = express();
@@ -19,6 +20,7 @@ app.get("/", (req, res) => {
 // Middlewares
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
 
 // Api Routes
 app.use("/api/auth", authRoutes);

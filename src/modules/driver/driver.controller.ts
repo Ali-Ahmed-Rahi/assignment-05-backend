@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction } from "express";
 import * as driverService from "./driver.service";
+import ApiError from "../../utils/ApiError";
 
 
 // Approve driver
 export const approveDriver = async (req: Request, res: Response, next: NextFunction) => {
-  console.log(req);
   try {
     const { id } = req.params;
     const driver = await driverService.approveDriver(id);
@@ -45,3 +45,32 @@ export const getDriverById = async (req: Request, res: Response, next: NextFunct
     next(error);
   }
 };
+
+export const setAvailability = async (req: any, res: Response, next: NextFunction) => {
+  try {
+    const userId = req.user?.id;
+    if (!userId) throw new ApiError(401, "Unauthorized");
+
+    const { online } = req.body;
+    if (typeof online !== "boolean") throw new ApiError(400, "online must be a boolean");
+
+    const driver = await driverService.setAvailability(userId, online);
+    res.status(200).json({ success: true, driver });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const getEarnings = async (req: any, res: Response, next: NextFunction) => {
+  try {
+    const userId = req.user?.id;
+
+    if (!userId) throw new ApiError(401, "Unauthorized");
+
+    const result = await driverService.getEarnings(userId);
+    
+    res.status(200).json({ success: true, ...result });
+  } catch (err) {
+    next(err);
+  }
+}

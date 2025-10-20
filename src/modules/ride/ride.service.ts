@@ -1,10 +1,10 @@
 import { Ride } from "./ride.model";
-
 import ApiError from "../../utils/ApiError";
 import mongoose from "mongoose";
 import { Driver } from "../driver/driver.model";
 
-// Rider requests a ride
+
+
 export const requestRide = async (riderId: string, pickupLocation: string, destinationLocation: string) => {
   if (!mongoose.Types.ObjectId.isValid(riderId)) throw new ApiError(400, "Invalid rider ID");
 
@@ -18,6 +18,8 @@ export const requestRide = async (riderId: string, pickupLocation: string, desti
   return ride;
 };
 
+
+
 // Rider cancels a ride (only if not accepted)
 export const cancelRide = async (rideId: string, riderId: string) => {
   if (!mongoose.Types.ObjectId.isValid(rideId)) throw new ApiError(400, "Invalid ride ID");
@@ -30,11 +32,15 @@ export const cancelRide = async (rideId: string, riderId: string) => {
   return ride;
 };
 
+
 // Driver accepts a ride
 export const acceptRide = async (rideId: string, driverId: string) => {
   const ride = await Ride.findById(rideId);
   if (!ride) throw new ApiError(404, "Ride not found");
-  if (ride.status !== "requested") throw new ApiError(400, "Ride already accepted or in progress");
+
+  if (ride.status !== "requested") {
+    throw new ApiError(400, "Ride already accepted or in progress")
+  };
   ride.driver = driverId;
   ride.status = "accepted";
   await ride.save();
@@ -48,11 +54,10 @@ export const rejectRide = async (rideId: string, driverId: string) => {
   if (!ride) {
     throw new ApiError(404, "Ride not found");
   }
-
-  // Ensure only the assigned driver can reject
-  if (ride.driver.toString() !== driverId) {
+  if (!ride.driver||ride.driver.toString() !== driverId) {
     throw new ApiError(403, "You are not authorized to reject this ride");
   }
+
 
   // Ride must be in requested or accepted stage
   if (!["requested", "accepted"].includes(ride.status)) {
@@ -70,13 +75,16 @@ export const updateRideStatus = async (rideId: string, status: string) => {
   const ride = await Ride.findById(rideId);
   if (!ride) throw new ApiError(404, "Ride not found");
 
-  const allowedTransitions: Record<string, string[]> = {
-    requested: ["accepted", "cancelled"],
-    accepted: ["in-progress", "cancelled"],
-    "in-progress": ["completed", "cancelled"],
-    completed: [],
-    cancelled: [],
-  };
+const allowedTransitions: Record<string, string[]> = {
+  requested: ["accepted", "cancelled", "rejected"],
+  accepted: ["picked_up", "cancelled"],          
+  picked_up: ["in_transit"],                       
+  in_transit: ["completed", "cancelled"],         
+  completed: [],                                   
+  cancelled: [],                                    
+  rejected: [],                                     
+};
+
 
   if (!allowedTransitions[ride.status].includes(status)) {
     throw new ApiError(400, "Invalid status update");
@@ -87,6 +95,8 @@ export const updateRideStatus = async (rideId: string, status: string) => {
   return ride;
 };
 
+
+
 // Get ride history for rider
 export const getRiderRides = async (riderId: string) => {
   const rides = await Ride.find({ rider: riderId }).populate("driver", "user approved online vehicleInfo");
@@ -96,16 +106,6 @@ export const getRiderRides = async (riderId: string) => {
 // Get ride history for driver
 export const getDriverRides = async (driverId: string) => {
   const rides = await Ride.find({ driver: driverId }).populate("rider", "name email");
-  return rides;
-};
-
-
-// get all rides (admin)
-export const getAllRides = async () => {
-  const rides = await Ride.find()
-    .populate("rider", "name email")
-    .populate("driver", "name email vehicleNo");
-
   return rides;
 };
 
@@ -136,3 +136,11 @@ export const completeRide = async (rideId: string) => {
 
   return ride;
 };
+
+export const getDriverEarnings= async (driverId :string)=>{
+  const driver = await Driver.findById(driverId)
+  if (!driver) {
+   throw new ApiError(404,"Driver not Found"); 
+  }
+  return driver.earnings || 0;
+}

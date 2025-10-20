@@ -35,7 +35,7 @@ export const acceptRide = async (req: Request, res: Response, next: NextFunction
     if (!req.user) throw new ApiError(401, "Unauthorized: user not found")
     const { id } = req.params;
     const ride = await rideService.acceptRide(id, req.user.id);
-    res.status(200).json({ success: true, ride,massage:"Ride Accept" });
+    res.status(200).json({ success: true, ride,massage:"Ride accepted" });
   } catch (error) {
     next(error);
   }
@@ -93,23 +93,28 @@ export const getDriverRides = async (req: Request, res: Response, next: NextFunc
   }
 };
 
-//  get all rides 
-export const getAllRides = async(req: Request, res: Response) => {
-  const rides = await rideService.getAllRides();
 
-  res.status(200).json({
-    success: true,
-    message: "All rides fetched successfully",
-    data: rides,
-  });
-};
-
-
-export const completeRideController = async (req: Request, res: Response, next: NextFunction) => {
+export const completeRide = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = req.params;
     const ride = await rideService.completeRide(id);
-    res.status(200).json({ success: true, ride });
+    res.status(200).json({ success: true,message: "Ride completed successfully", ride });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getDriverEarnings = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    if (!req.user) throw new ApiError(401, "Unauthorized: user not found");
+
+    const earnings = await rideService.getDriverEarnings(req.user.id);
+
+    res.status(200).json({
+      success: true,
+      message: "Driver earnings fetched successfully",
+      earnings,
+    });
   } catch (error) {
     next(error);
   }

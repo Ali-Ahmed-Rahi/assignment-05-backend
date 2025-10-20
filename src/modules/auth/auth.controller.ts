@@ -4,7 +4,6 @@ import { registerSchema, loginSchema } from "./auth.schema";
 import { ZodError } from "zod";
 import { User } from "../user/user.model";
 import ApiError from "../../utils/ApiError";
-import bcrypt from "bcryptjs";
 import { Driver } from "../driver/driver.model";
 
 export const register = async (req: Request, res: Response, next: NextFunction) => {
@@ -13,19 +12,13 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
     const parsedData = registerSchema.parse(req.body);
 
     const { name, email, password, role } = parsedData;
-    console.log(parsedData);
 
     // Check if user exists
     const existingUser = await User.findOne({ email });
     if (existingUser) throw new ApiError(400, "User already exists"); 
 
-    // // Hash password
-    // const hashedPassword = await bcrypt.hash(password, 10);
-    // console.log(hashedPassword);
-
     // Create user
     const user = await User.create(parsedData);
-    // console.log(user);
 
     // Auto-create driver document if role === 'driver'
     if (role === "driver") {
@@ -42,6 +35,8 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
     next(error);
   }
 };
+
+
 
 export const login = async (req: Request, res: Response, next: NextFunction) => {
   try {
