@@ -20,7 +20,6 @@ export const requestRide = async (riderId: string, pickupLocation: string, desti
 
 
 
-// Rider cancels a ride (only if not accepted)
 export const cancelRide = async (rideId: string, riderId: string) => {
   if (!mongoose.Types.ObjectId.isValid(rideId)) throw new ApiError(400, "Invalid ride ID");
   const ride = await Ride.findById(rideId);
@@ -48,7 +47,6 @@ export const acceptRide = async (rideId: string, driverId: string) => {
 };
 
 
-// Driver rejects a ride
 export const rejectRide = async (rideId: string, driverId: string) => {
   const ride = await Ride.findById(rideId);
   if (!ride) {
@@ -70,7 +68,8 @@ export const rejectRide = async (rideId: string, driverId: string) => {
   return ride;
 };
 
-// Update ride status (Driver only)
+
+
 export const updateRideStatus = async (rideId: string, status: string) => {
   const ride = await Ride.findById(rideId);
   if (!ride) throw new ApiError(404, "Ride not found");
@@ -97,13 +96,13 @@ const allowedTransitions: Record<string, string[]> = {
 
 
 
-// Get ride history for rider
+
 export const getRiderRides = async (riderId: string) => {
   const rides = await Ride.find({ rider: riderId }).populate("driver", "user approved online vehicleInfo");
   return rides;
 };
 
-// Get ride history for driver
+
 export const getDriverRides = async (driverId: string) => {
   const rides = await Ride.find({ driver: driverId }).populate("rider", "name email");
   return rides;
@@ -137,10 +136,3 @@ export const completeRide = async (rideId: string) => {
   return ride;
 };
 
-export const getDriverEarnings= async (driverId :string)=>{
-  const driver = await Driver.findById(driverId)
-  if (!driver) {
-   throw new ApiError(404,"Driver not Found"); 
-  }
-  return driver.earnings || 0;
-}

@@ -16,7 +16,7 @@ router.patch("/:id/accept", authMiddleware, authorize("driver"), rideController.
 router.patch("/:id/reject",authMiddleware,authorize("driver"),rideController.rejectRide);
 router.patch("/:id/status", authMiddleware, authorize("driver","admin"), rideController.updateRideStatus);
 router.patch("/:id/complete", authMiddleware, authorize("driver"), rideController.completeRide);
-router.get("/earnings/me", authMiddleware, authorize("driver"), rideController.getDriverEarnings);
+
 
 
 export default router;

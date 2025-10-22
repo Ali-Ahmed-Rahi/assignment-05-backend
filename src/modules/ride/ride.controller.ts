@@ -104,18 +104,3 @@ export const completeRide = async (req: Request, res: Response, next: NextFuncti
   }
 };
 
-export const getDriverEarnings = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    if (!req.user) throw new ApiError(401, "Unauthorized: user not found");
-
-    const earnings = await rideService.getDriverEarnings(req.user.id);
-
-    res.status(200).json({
-      success: true,
-      message: "Driver earnings fetched successfully",
-      earnings,
-    });
-  } catch (error) {
-    next(error);
-  }
-};

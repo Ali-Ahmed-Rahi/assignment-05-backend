@@ -1,6 +1,7 @@
 import { Driver, IDriver } from "./driver.model";
 import ApiError from "../../utils/ApiError";
 import mongoose from "mongoose";
+import { Ride } from "../ride/ride.model";
 
 export const getAllDrivers = async (): Promise<IDriver[]> => {
   return await Driver.find().populate("user", "name email role blocked");
@@ -40,8 +41,16 @@ export const setAvailability = async (userId: string, online: boolean) => {
   return driver;
 };
 
-export const getEarnings = async (userId: string) => {
-  const driver = await Driver.findOne({ user: userId });
+export const getEarnings = async (driverId: string) => {
+  const driver = await Driver.findById(driverId);
   if (!driver) throw new ApiError(404, "Driver not found");
-  return { earnings: driver.earnings, driver };
-}
+
+  const completedRides = await Ride.find({ driver: driverId, status: "completed" });
+  const totalEarnings = completedRides.reduce((sum, ride) => sum + (ride.fare || 0), 0);
+
+  return {
+    totalEarnings,
+    rideCount: completedRides.length,
+    rides: completedRides,
+  };
+};

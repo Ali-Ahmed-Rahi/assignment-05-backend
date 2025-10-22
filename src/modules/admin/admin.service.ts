@@ -9,7 +9,6 @@ export const getAllUsers = async () => {
 };
 
 
-
 export const getAllDrivers = async (): Promise<any[]> => {
   return await Driver.find().populate("user", "name email role blocked approved online vehicleInfo");
 };

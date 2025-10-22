@@ -51,26 +51,26 @@ export const setAvailability = async (req: any, res: Response, next: NextFunctio
     const userId = req.user?.id;
     if (!userId) throw new ApiError(401, "Unauthorized");
 
-    const { online } = req.body;
-    if (typeof online !== "boolean") throw new ApiError(400, "online must be a boolean");
+    const { available} = req.body;
+    if (typeof available !== "boolean") throw new ApiError(400, "available must be a boolean");
 
-    const driver = await driverService.setAvailability(userId, online);
+    const driver = await driverService.setAvailability(userId, available);
     res.status(200).json({ success: true, driver });
   } catch (err) {
     next(err);
   }
 };
 
-export const getEarnings = async (req: any, res: Response, next: NextFunction) => {
+export const getEarnings = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const userId = req.user?.id;
-
-    if (!userId) throw new ApiError(401, "Unauthorized");
-
-    const result = await driverService.getEarnings(userId);
-    
-    res.status(200).json({ success: true, ...result });
-  } catch (err) {
-    next(err);
+    if (!req.user) throw new ApiError(401, "Unauthorized");
+    const earnings = await driverService.getEarnings(req.user.id);
+    res.status(200).json({
+      success: true,
+      message: "Driver earnings fetched successfully",
+      earnings,
+    });
+  } catch (error) {
+    next(error);
   }
-}
+};
