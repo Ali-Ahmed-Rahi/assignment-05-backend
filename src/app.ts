@@ -19,7 +19,7 @@ app.get("/", (req, res) => {
 
 // Middlewares
 app.use(cors({
-  origin:["http://localhost:3000"],
+  origin:"http://localhost:3000",
   credentials:true,
 }));
 app.use(express.json());
@@ -29,7 +29,7 @@ app.use(cookieParser());
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/drivers", driverRoutes);
-app.use("/api/rides", rideRoutes);
+app.use("/api/rider", rideRoutes);
 app.use("/api/admin", adminRoutes);
 
 
