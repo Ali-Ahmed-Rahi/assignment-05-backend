@@ -21,14 +21,13 @@ export const approveDriver = async (id: string): Promise<IDriver> => {
   return driver;
 };
 
+// Suspend driver
 export const suspendDriver = async (id: string): Promise<IDriver> => {
   const driver = await getDriverById(id);
   driver.approved = false;
   await driver.save();
   return driver;
 };
-
-
 export const setAvailability = async (userId: string, online: boolean) => {
   const driver = await Driver.findOne({ user: userId });
 

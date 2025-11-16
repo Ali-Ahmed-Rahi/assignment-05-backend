@@ -14,7 +14,7 @@ router.get("/me/driver", authMiddleware, authorize("driver"), rideController.get
 // Driver routes
 router.patch("/:id/accept", authMiddleware, authorize("driver"), rideController.acceptRide);
 router.patch("/:id/reject",authMiddleware,authorize("driver"),rideController.rejectRide);
-router.patch("/:id/status", authMiddleware, authorize("driver","admin"), rideController.updateRideStatus);
+router.patch("/:id/status", authMiddleware, authorize("driver"), rideController.updateRideStatus);
 router.patch("/:id/complete", authMiddleware, authorize("driver"), rideController.completeRide);
 
 

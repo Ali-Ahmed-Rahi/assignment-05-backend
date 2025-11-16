@@ -32,16 +32,6 @@ export const getRides = async (req: Request, res: Response, next: NextFunction) 
 };
 
 
-export const approveSuspendDriver = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const { id } = req.params;
-    const { approve } = req.body;
-    const driver = await adminService.approveDriver(id, approve);
-    res.status(200).json({ success: true, driver });
-  } catch (error) {
-    next(error);
-  }
-};
 
 
 

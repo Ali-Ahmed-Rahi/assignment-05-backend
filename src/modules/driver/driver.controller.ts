@@ -6,7 +6,7 @@ import ApiError from "../../utils/ApiError";
 // Approve driver
 export const approveDriver = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { id } = req.params;
+    const { id } = req.params; // only id needed
     const driver = await driverService.approveDriver(id);
     res.status(200).json({ success: true, driver });
   } catch (error) {
@@ -17,7 +17,7 @@ export const approveDriver = async (req: Request, res: Response, next: NextFunct
 // Suspend driver
 export const suspendDriver = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { id } = req.params;
+    const { id } = req.params; // only id needed
     const driver = await driverService.suspendDriver(id);
     res.status(200).json({ success: true, driver });
   } catch (error) {

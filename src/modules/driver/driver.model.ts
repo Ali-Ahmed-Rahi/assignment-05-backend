@@ -1,7 +1,8 @@
 import mongoose, { Schema, Document } from "mongoose";
 
 export interface IDriver extends Document {
-  user: mongoose.Schema.Types.ObjectId; 
+  user: mongoose.Schema.Types.ObjectId;
+  name: { type: String },
   approved: boolean;
   online: boolean;
   earnings?: number;
@@ -13,6 +14,7 @@ export interface IDriver extends Document {
 const driverSchema: Schema<IDriver> = new Schema(
   {
     user: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    name: { type: String, required: false }, 
     approved: { type: Boolean, default: false },
     online: { type: Boolean, default: false },
     earnings: { type: Number, default: 0 },

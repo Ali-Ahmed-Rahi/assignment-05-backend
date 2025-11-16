@@ -10,8 +10,6 @@ router.get("/riders", adminController.getUsers);
 
 router.get("/drivers", adminController.getDrivers);
 
-router.patch("/drivers/:id/approve", adminController.approveSuspendDriver);
-
 router.get("/rides", adminController.getRides);
 
 export default router;

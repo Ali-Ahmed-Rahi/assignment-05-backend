@@ -22,12 +22,21 @@ export const loginUser = async (email: string, password: string) => {
   if (!isMatch) throw new ApiError(401, "Password didn't Match");
 
   const token = jwt.sign(
-    { id: user._id, role: user.role },
+    { id: user._id, role: user.role , email:user.email },
     process.env.JWT_SECRET || "secret",
     { expiresIn: "1d" }
   );
 
   return { user, token };
 };
+
+export const logoutUser = async (): Promise<{ success: boolean; message: string }> => {
+
+  return {
+    success: true,
+    message: "Logout successful",
+  };
+};
+
 
 
