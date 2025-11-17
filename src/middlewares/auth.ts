@@ -28,9 +28,7 @@ export const authMiddleware = (req: any, res: Response, next: NextFunction) => {
 
 
 //Role-based authorization
-export const authorize =
-  (...roles: string[]) =>
-  (req: any, res: Response, next: NextFunction) => {
+export const authorize =(...roles: string[]) =>(req: any, res: Response, next: NextFunction) => {
     if (!roles.includes(req.user.role)) {
       return next(new ApiError(403, "Forbidden"));
     }

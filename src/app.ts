@@ -19,7 +19,7 @@ app.get("/", (req, res) => {
 
 // Middlewares
 app.use(cors({
-  origin:"http://localhost:3000",
+  origin:["http://localhost:3000","https://ride-booking-frontend-blue.vercel.app"],
   credentials:true,
 }));
 app.use(express.json());
@@ -28,7 +28,7 @@ app.use(cookieParser());
 // Api Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
-app.use("/api/drivers", driverRoutes);
+app.use("/api/driver", driverRoutes);
 app.use("/api/rider", rideRoutes);
 app.use("/api/admin", adminRoutes);
 

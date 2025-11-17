@@ -6,11 +6,11 @@ import ApiError from "../../utils/ApiError";
 export const requestRide = async (req: Request, res: Response, next: NextFunction) => {
   try {
     if (!req.user) throw new ApiError(401, "Unauthorized: user not found")
-    const riderId = req.user.id; 
+      const riderId = req.user.id; 
     const { pickupLocation, destinationLocation ,fare } = req.body;
-
+    
     const ride = await rideService.requestRide(riderId, pickupLocation, destinationLocation,fare);
-
+    
     res.status(201).json({ success: true, ride });
   } catch (error) {
     next(error);
@@ -21,50 +21,8 @@ export const requestRide = async (req: Request, res: Response, next: NextFunctio
 export const cancelRide = async (req: Request, res: Response, next: NextFunction) => {
   try {
     if (!req.user) throw new ApiError(401, "Unauthorized: user not found")
-    const { id } = req.params;
+      const { id } = req.params;
     const ride = await rideService.cancelRide(id, req.user.id);
-    res.status(200).json({ success: true, ride });
-  } catch (error) {
-    next(error);
-  }
-};
-
-// Driver accepts ride
-export const acceptRide = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    if (!req.user) throw new ApiError(401, "Unauthorized: user not found")
-    const { id } = req.params;
-    const ride = await rideService.acceptRide(id, req.user.id);
-    res.status(200).json({ success: true, ride,massage:"Ride accepted" });
-  } catch (error) {
-    next(error);
-  }
-};
-
-
-// Driver rejects a ride
-export const rejectRide = async (req: any, res: Response, next: NextFunction) => {
-  try {
-    const { id } = req.params;
-    const ride = await rideService.rejectRide(id, req.user.id);
-
-    res.status(200).json({
-      success: true,
-      message: "Ride rejected successfully",
-      ride,
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
-// Driver updates ride status
-export const updateRideStatus = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    if (!req.user) throw new ApiError(401, "Unauthorized: user not found")
-    const { id } = req.params;
-    const { status } = req.body;
-    const ride = await rideService.updateRideStatus(id, status);
     res.status(200).json({ success: true, ride });
   } catch (error) {
     next(error);
@@ -81,26 +39,3 @@ export const getRiderRides = async (req: Request, res: Response, next: NextFunct
     next(error);
   }
 };
-
-// Driver views history
-export const getDriverRides = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    if (!req.user) throw new ApiError(401, "Unauthorized: user not found")
-    const rides = await rideService.getDriverRides(req.user.id);
-    res.status(200).json({ success: true, rides });
-  } catch (error) {
-    next(error);
-  }
-};
-
-
-export const completeRide = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const { id } = req.params;
-    const ride = await rideService.completeRide(id);
-    res.status(200).json({ success: true,message: "Ride completed successfully", ride });
-  } catch (error) {
-    next(error);
-  }
-};
-

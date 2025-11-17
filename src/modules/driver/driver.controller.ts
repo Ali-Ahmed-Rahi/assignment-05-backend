@@ -3,6 +3,7 @@ import * as driverService from "./driver.service";
 import ApiError from "../../utils/ApiError";
 
 
+
 // Approve driver
 export const approveDriver = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -70,6 +71,71 @@ export const getEarnings = async (req: Request, res: Response, next: NextFunctio
       message: "Driver earnings fetched successfully",
       earnings,
     });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Driver accepts ride
+export const acceptRide = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    if (!req.user) throw new ApiError(401, "Unauthorized: user not found")
+    const { id } = req.params;
+    const ride = await driverService.acceptRide(id, req.user.id);
+    res.status(200).json({ success: true, ride,massage:"Ride accepted" });
+  } catch (error) {
+    next(error);
+  }
+};
+
+
+// Driver rejects a ride
+export const rejectRide = async (req: any, res: Response, next: NextFunction) => {
+  try {
+    const { id } = req.params;
+    const ride = await driverService.rejectRide(id, req.user.id);
+
+    res.status(200).json({
+      success: true,
+      message: "Ride rejected successfully",
+      ride,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Driver updates ride status
+export const updateRideStatus = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    if (!req.user) throw new ApiError(401, "Unauthorized: user not found")
+    const { id } = req.params;
+    const { status } = req.body;
+    const ride = await driverService.updateRideStatus(id, status);
+    res.status(200).json({ success: true, ride });
+  } catch (error) {
+    next(error);
+  }
+};
+
+
+// Driver views history
+export const getDriverRides = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    if (!req.user) throw new ApiError(401, "Unauthorized: user not found")
+    const rides = await driverService.getDriverRides(req.user.id);
+    res.status(200).json({ success: true, rides });
+  } catch (error) {
+    next(error);
+  }
+};
+
+
+export const completeRide = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { id } = req.params;
+    const ride = await driverService.completeRide(id);
+    res.status(200).json({ success: true,message: "Ride completed successfully", ride });
   } catch (error) {
     next(error);
   }

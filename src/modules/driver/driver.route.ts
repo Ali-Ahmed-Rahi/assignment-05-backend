@@ -15,6 +15,14 @@ router.get("/:id", authMiddleware, authorize("admin"), driverController.getDrive
 
 router.patch("/availability", authMiddleware, authorize("driver"), driverController.setAvailability);
 
-router.get("/earnings", authMiddleware, authorize("driver"), driverController.getEarnings);
+router.get("/earnings/me", authMiddleware, authorize("driver"), driverController.getEarnings);
+
+
+// Driver routes
+router.get("/info/me", authMiddleware, authorize("driver"), driverController.getDriverRides);
+router.patch("/:id/accept", authMiddleware, authorize("driver"), driverController.acceptRide);
+router.patch("/:id/reject",authMiddleware,authorize("driver"),driverController.rejectRide);
+router.patch("/:id/status", authMiddleware, authorize("driver"), driverController.updateRideStatus);
+router.patch("/:id/complete", authMiddleware, authorize("driver"), driverController.completeRide);
 
 export default router;
